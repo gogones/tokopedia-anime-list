@@ -26,6 +26,11 @@ const DialogAction = styled(Box)`
   margin-top: 1rem;
 `;
 
+const HelperText = styled(Box)`
+  color: red;
+  margin-top: 0.5rem;
+`;
+
 const CollectionDialog = ({open, onClose, collectionId}) => {
   const {name: initCollectionName} = useCollectionDetail(collectionId);
   const {handleAdd, handleEdit, collectionList} = useContext(Context);
@@ -42,16 +47,17 @@ const CollectionDialog = ({open, onClose, collectionId}) => {
 
   React.useEffect(() => {
     if (
-      collectionList
-        .map(collection => collection.name)
-        .includes(collectionName) ||
+      (initCollectionName !== collectionName &&
+        collectionList
+          .map(collection => collection.name)
+          .includes(collectionName)) ||
       checkSpecialCharInString(collectionName)
     ) {
       setError(true);
     } else {
       setError(false);
     }
-  }, [collectionName, collectionList]);
+  }, [collectionName, collectionList, initCollectionName]);
 
   React.useEffect(
     () => () => {
@@ -85,9 +91,19 @@ const CollectionDialog = ({open, onClose, collectionId}) => {
                 onChange={e => setCollectionName(e.target.value)}
               />
 
+              {error && (
+                <HelperText>
+                  Collection name is already exist or contain special character
+                </HelperText>
+              )}
+
               <DialogAction>
                 <Button
-                  disabled={error || collectionName === ''}
+                  disabled={
+                    error ||
+                    collectionName === '' ||
+                    initCollectionName === collectionName
+                  }
                   onClick={handleSubmit}>
                   Submit
                 </Button>
