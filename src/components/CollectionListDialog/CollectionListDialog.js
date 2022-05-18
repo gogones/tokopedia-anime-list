@@ -31,7 +31,21 @@ const DialogAction = styled(Box)`
   margin-top: 1rem;
 `;
 
-// eslint-disable-next-line react/prop-types
+const Footer = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 3rem;
+`;
+
+const CloseButton = styled(Button)`
+  position: absolute;
+  height: 100%;
+  right: 0;
+  top: 0;
+`;
+
 const CollectionListDialog = ({open, onClose}) => {
   const {collectionList, handleAdd, handleAddAnime} = useContext(Context);
   const [collectionName, setCollectionName] = React.useState('');
@@ -54,14 +68,13 @@ const CollectionListDialog = ({open, onClose}) => {
 
   return (
     <Transition appear show={open} as={Fragment}>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog open={open} onClose={() => {}}>
         <DialogBackdrop />
 
         <DialogContent>
           <DialogPanel
             css={css`
-              max-height: 50vh;
-              overflow: auto;
+              max-height: 70vh;
             `}>
             <DialogTitle>Select Collection</DialogTitle>
             {collectionList.length === 0 && (
@@ -89,19 +102,36 @@ const CollectionListDialog = ({open, onClose}) => {
               </>
             )}
 
-            {collectionList.map(collection => (
-              <Card
-                key={collection.id}
-                css={css`
-                  margin-bottom: 16px;
-                `}>
-                <h2>{collection.name}</h2>
-                <Button
-                  onClick={() => handleAddAnime(collection.id, data.Media)}>
-                  Add
-                </Button>
-              </Card>
-            ))}
+            {collectionList.length > 0 && (
+              <>
+                <Box
+                  css={css`
+                    height: 50vh;
+                    overflow: auto;
+                    display: flex;
+                    flex-direction: column;
+                  `}>
+                  {collectionList.map(collection => (
+                    <Card
+                      key={collection.id}
+                      css={css`
+                        margin-bottom: 16px;
+                      `}>
+                      <h2>{collection.name}</h2>
+                      <Button
+                        onClick={() =>
+                          handleAddAnime(collection.id, data.Media)
+                        }>
+                        Add
+                      </Button>
+                    </Card>
+                  ))}
+                </Box>
+                <Footer>
+                  <CloseButton onClick={onClose}>Close</CloseButton>
+                </Footer>
+              </>
+            )}
           </DialogPanel>
         </DialogContent>
       </Dialog>

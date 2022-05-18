@@ -23,7 +23,7 @@ const ConfirmationDialog = ({
   text = 'Are you sure you want to delete this collection?',
 }) => (
   <Transition appear show={open} as={Fragment}>
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={() => {}}>
       <DialogBackdrop />
 
       <DialogContent>

@@ -78,7 +78,7 @@ const CollectionDialog = ({open, onClose, collectionId}) => {
 
   return (
     <Transition appear show={open} as={Fragment}>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog open={open} onClose={() => {}}>
         <DialogBackdrop />
 
         <DialogContent>
